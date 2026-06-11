@@ -4,8 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches: ["main"]
+    paths: ["epel10/**"]
   pull_request:
     branches: ["main"]
+    paths: ["epel10/**"]
 
 jobs:
   build-and-push:
