@@ -1,0 +1,18 @@
+FROM almalinux:10
+
+# fastestmirror=True speeds up dnf usage when some mirrors are unavailable
+
+RUN sed -i '$a fastestmirror=True' /etc/dnf/dnf.conf && \
+	dnf install -y --setopt=install_weak_deps=False epel-release && \
+	dnf install -y --setopt=install_weak_deps=False \
+	glibc-langpack-en rpm-build rpmdevtools rpmlint git-core \
+	golang cargo rust \
+	&& dnf clean all && rm -rf /var/cache/dnf \
+	&& rpmdev-setuptree
+
+WORKDIR /root/rpmbuild
+COPY entrypoint.sh /
+
+VOLUME /root/rpmbuild
+
+ENTRYPOINT ["/entrypoint.sh"]
